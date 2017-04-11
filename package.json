@@ -5,6 +5,10 @@
   "scripts": {
     "start": "nodejs ./bin/www"
   },
+  "engines":{
+    "node": "~7.8.0",
+    "npm": "~4.2.0"
+  },
   "dependencies": {
     "express": "~4.0.0",
     "static-favicon": "~1.0.0",
