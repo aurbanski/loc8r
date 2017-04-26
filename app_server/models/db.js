@@ -1,5 +1,5 @@
 var mongoose = require( 'mongoose' );
-
+var gracefulShutdown;
 var dbURI = 'mongodb://localhost/Loc8r';
 mongoose.connect(dbURI).connection;
 
@@ -15,7 +15,7 @@ mongoose.connection.on('disconnected', function() {
   console.log('Mongoose disconnected');
 });
 
-var gracefulShutdown = function (msg, callback) {
+gracefulShutdown = function (msg, callback) {
   mongoose.connection.close(function () {
     console.log("Mongoose disconnected through" + msg);
     callback();
@@ -28,16 +28,16 @@ process.once('SIGUSR2', function () {
   });
 });
 
-process.once('SIGINT', function () {
+process.on('SIGINT', function () {
   gracefulShutdown('app termination', function () {
     process.exit(0);
   });
 });
 
-process.once('SIGTERM', function () {
+process.on('SIGTERM', function () {
   gracefulShutdown('Heroku app shutdown', function () {
     process.exit(0);
   });
 });
 
-require('./location.js')
+require('./locations.js')
